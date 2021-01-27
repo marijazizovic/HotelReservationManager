@@ -13,14 +13,14 @@ namespace HotelReservationLibrary.DataAccess
             hotelRooms = new List<int>();
         }
 
-        public void AddHotelRooms(int size)
-        {
-            hotelRooms = Enumerable.Range(1, size).ToList();
-        }
-
         public IEnumerable<int> GetHotelRooms()
         {
             return hotelRooms;
+        }
+
+        public void AddHotelRooms(int size)
+        {
+            hotelRooms = Enumerable.Range(1, size).ToList();
         }
     }
 }

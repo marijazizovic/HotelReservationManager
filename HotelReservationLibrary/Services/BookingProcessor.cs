@@ -9,7 +9,7 @@ namespace HotelReservationLibrary.Services
 {
     public class BookingProcessor : IBookingProcessor
     {
-        public const int ReservationPeriod = 364;
+        public const int RESERVATION_PERIOD = 364;
 
         private readonly IHotelRepository hotelRepository;
         private readonly IReservationRepository reservationRepository;
@@ -55,13 +55,13 @@ namespace HotelReservationLibrary.Services
 
         private int GetOptimalRoom(IEnumerable<int> availableRooms)
         {
-            //TODO: Add optimization 
+            //TODO: Add optimization for room reservation
             return availableRooms.FirstOrDefault();
         }
 
         private bool ValidateDays(int checkInDay, int checkOutDay)
         {
-            return checkInDay >= 0 && checkOutDay <= ReservationPeriod && checkInDay <= checkOutDay;
+            return checkInDay >= 0 && checkOutDay <= RESERVATION_PERIOD && checkInDay <= checkOutDay;
         }
     }
 }

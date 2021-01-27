@@ -5,7 +5,7 @@ namespace HotelReservationLibrary.Services
 {
     public class HotelProcessor : IHotelProcessor
     {
-        public const int MaxSizeOfHotel = 1000;
+        public const int MAX_SIZE_OF_HOTEL = 1000;
 
         private readonly IHotelRepository hotelRepository;
 
@@ -21,7 +21,7 @@ namespace HotelReservationLibrary.Services
 
         public bool ValidateHotelSize(int size)
         {
-            return size <= MaxSizeOfHotel && size > 0;
+            return size <= MAX_SIZE_OF_HOTEL && size > 0;
         }
     }
 }
