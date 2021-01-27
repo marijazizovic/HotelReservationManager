@@ -2,8 +2,8 @@
 {
     public class Reservation
     {
-        public int CheckIn { get; set; }
-        public int CheckOut { get; set; }
+        public int CheckInDay { get; set; }
+        public int CheckOutDay { get; set; }
         public int RoomNumber { get; set; }
     }
 }

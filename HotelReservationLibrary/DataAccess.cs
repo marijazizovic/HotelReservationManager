@@ -1,6 +1,5 @@
 ﻿using HotelReservationLibrary.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace HotelReservationLibrary
 {
@@ -12,9 +11,9 @@ namespace HotelReservationLibrary
             return reservations;
         }
 
-        public static void AddReservation(int checkIn, int checkOut, Dictionary<int, List<Reservation>> reservationsByRoom, List<Reservation> reservations, int[] hotelRooms)
+        public static void AddReservation(int checkIn, int checkOut, int roomNumber, List<Reservation> reservations)
         {
-            reservations.Add(new Reservation { CheckIn = checkIn, CheckOut = checkOut, RoomNumber = hotelRooms.Except(reservationsByRoom.Keys).First() });
+            reservations.Add(new Reservation { CheckInDay = checkIn, CheckOutDay = checkOut, RoomNumber = roomNumber});
         }
     }
 }

@@ -68,7 +68,7 @@ namespace HotelReservationManager
 
         private static void Book(int checkIn, int checkOut)
         {
-            Response result = bookingProcessor.CheckIn(checkIn, checkOut);
+            BookingResult result = bookingProcessor.CheckIn(checkIn, checkOut);
             Console.WriteLine(result.ToString());
         }
     }

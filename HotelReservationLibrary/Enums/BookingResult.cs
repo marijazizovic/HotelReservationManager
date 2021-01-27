@@ -1,6 +1,6 @@
 ﻿namespace HotelReservationLibrary.Enums
 {
-    public enum Response
+    public enum BookingResult
     {
         Accept,
         Decline
