@@ -7,15 +7,17 @@ using System.Text;
 
 namespace HotelReservationLibrary
 {
-    public class BookingProcessor
+    public sealed class BookingProcessor
     {
-        private static readonly BookingProcessor _instance = new BookingProcessor();
+        private static BookingProcessor _instance = null;
+
+        private static readonly object _instanceLock = new object();
+
+        public const int ReservationPeriod = 364;
+
+        public const int MaxSizeOfHotel = 1000;
 
         public int[] HotelRooms { get; set; }
-
-        public int ReservationPeriod { get; set; } = 364;
-
-        public int MaxSizeOfHotel { get; set; } = 1000;
 
         private List<Reservation> reservations;
 
@@ -23,9 +25,19 @@ namespace HotelReservationLibrary
         {
             reservations = DataAccess.GetReservations().ToList();
         }
-        public static BookingProcessor GetInstance()
+        public static BookingProcessor GetInstance
         {
-            return _instance;
+            get
+            {
+                lock (_instanceLock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new BookingProcessor();
+                    }
+                    return _instance;
+                }
+            }
         }
 
         public Response CheckIn(int checkIn, int checkOut)

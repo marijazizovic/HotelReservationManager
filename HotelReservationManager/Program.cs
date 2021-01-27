@@ -9,7 +9,7 @@ namespace HotelReservationManager
         static BookingProcessor bookingProcessor;
         static void Main(string[] args)
         {
-            bookingProcessor = BookingProcessor.GetInstance();
+            bookingProcessor = BookingProcessor.GetInstance;
 
             Console.Write("Enter size of hotel:");
             string size = Console.ReadLine();
