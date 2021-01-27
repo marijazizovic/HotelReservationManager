@@ -1,75 +1,50 @@
-﻿using HotelReservationLibrary;
-using HotelReservationLibrary.Enums;
-using System;
+﻿using HotelReservationLibrary.DataAccess;
+using HotelReservationLibrary.DataAccess.Interfaces;
+using HotelReservationLibrary.Services;
+using HotelReservationLibrary.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 
 namespace HotelReservationManager
 {
     class Program
     {
-        static BookingProcessor bookingProcessor;
         static void Main(string[] args)
         {
-            bookingProcessor = BookingProcessor.GetInstance;
+            var services = ConfigureServices();
 
-            Console.Write("Enter size of hotel:");
-            string size = Console.ReadLine();
+            var serviceProvider = services.BuildServiceProvider();
 
-            int sizeOfHotel;
-            while (!int.TryParse(size, out sizeOfHotel) || !bookingProcessor.ValidateHotelSize(sizeOfHotel))
-            {
-                Console.WriteLine();
-                Console.WriteLine("Invalid number given:");
-                Console.Write("Enter size of hotel:");
-                size = Console.ReadLine();
-            }
-
-            bookingProcessor.SetSizeOfHotel(sizeOfHotel);
-
-            MakeReservations();
+            // calls the Run method in App, which is replacing Main
+            serviceProvider.GetService<App>().Run();
         }
 
-        private static void MakeReservations()
+        private static IServiceCollection ConfigureServices()
         {
-            string enterMoreReservations;
-            do
-            {
-                Console.Write("Enter CHECK IN:");
-                string checkInInput = Console.ReadLine();
+            IServiceCollection services = new ServiceCollection();
 
-                int checkIn;
-                
-                while (!int.TryParse(checkInInput, out checkIn))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Invalid number given:");
-                    Console.Write("Enter CHECK IN:");
-                    checkInInput = Console.ReadLine();
-                }
+            var config = LoadConfiguration();
+            services.AddSingleton(config);
 
-                Console.Write("Enter CHECK OUT:");
-                string checkOutInput = Console.ReadLine();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IHotelRepository, HotelRepository>();
+            services.AddSingleton<IBookingProcessor, BookingProcessor>();
+            services.AddSingleton<IHotelProcessor, HotelProcessor>();
 
-                int checkOut;
-                while (!int.TryParse(checkOutInput, out checkOut))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Invalid number given:");
-                    Console.Write("Enter CHECK OUT:");
-                    checkInInput = Console.ReadLine();
-                }
+            // required to run the application
+            services.AddTransient<App>();
 
-                Book(checkIn, checkOut);
-
-                Console.Write("Do you want to book more (yes/no): ");
-                enterMoreReservations = Console.ReadLine();
-
-            } while (enterMoreReservations.ToLower() == "yes");
+            return services;
         }
 
-        private static void Book(int checkIn, int checkOut)
+        public static IConfiguration LoadConfiguration()
         {
-            BookingResult result = bookingProcessor.CheckIn(checkIn, checkOut);
-            Console.WriteLine(result.ToString());
-        }
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            return builder.Build();
+        }     
     }
 }

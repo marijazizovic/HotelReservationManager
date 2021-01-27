@@ -1,4 +1,7 @@
-﻿using HotelReservationLibrary;
+﻿using HotelReservationLibrary.DataAccess;
+using HotelReservationLibrary.DataAccess.Interfaces;
+using HotelReservationLibrary.Services;
+using HotelReservationLibrary.Services.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -7,16 +10,27 @@ namespace HotelReservationTests
     [TestClass]
     public class BookingProcessorTests
     {
+        IBookingProcessor bookingProcessor;
+        IHotelProcessor hotelProcessor;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            IReservationRepository reservationRepository = new ReservationRepository();
+            IHotelRepository hotelRepository = new HotelRepository();
+            bookingProcessor = new BookingProcessor(reservationRepository, hotelRepository);
+            hotelProcessor = new HotelProcessor(hotelRepository);
+        }
+
         [TestMethod]
-        public void TestMethod1()
+        public void CheckIn_CheckInDayOutsidePeriod()
         {
             // Arrange
             int size = 1;
             int checkIn = -4;
             int checkOut = 2;
-            string expected = "Decline";
-            BookingProcessor bookingProcessor = BookingProcessor.GetInstance;
-            bookingProcessor.SetSizeOfHotel(size);
+            string expected = "Decline";           
+            hotelProcessor.SetSizeOfHotel(size);
 
             // Act
             var actual = bookingProcessor.CheckIn(checkIn, checkOut).ToString();
@@ -26,15 +40,14 @@ namespace HotelReservationTests
         }
 
         [TestMethod]
-        public void TestMethod2()
+        public void CheckIn_CheckOutDayOutsidePeriod()
         {
             // Arrange
             int size = 1;
             int checkIn = 200;
             int checkOut = 400;
             string expected = "Decline";
-            BookingProcessor bookingProcessor = BookingProcessor.GetInstance;
-            bookingProcessor.SetSizeOfHotel(size);
+            hotelProcessor.SetSizeOfHotel(size);
 
             // Act
             var actual = bookingProcessor.CheckIn(checkIn, checkOut).ToString();
@@ -44,7 +57,7 @@ namespace HotelReservationTests
         }
 
         [TestMethod]
-        public void TestMethod3()
+        public void CheckIn_AllAccepted()
         {
             // Arrange
             int size = 3;
@@ -67,8 +80,8 @@ namespace HotelReservationTests
                 "Accept",
                 "Accept"
             };
-            BookingProcessor bookingProcessor = BookingProcessor.GetInstance;
-            bookingProcessor.SetSizeOfHotel(size);
+
+            hotelProcessor.SetSizeOfHotel(size);
             List<string> actual = new List<string>();
 
             // Act
@@ -82,7 +95,7 @@ namespace HotelReservationTests
         }
 
         [TestMethod]
-        public void TestMethod4()
+        public void CheckIn_LastDeclined()
         {
             // Arrange
             int size = 3;
@@ -101,8 +114,8 @@ namespace HotelReservationTests
                 "Accept",
                 "Decline"
             };
-            BookingProcessor bookingProcessor = BookingProcessor.GetInstance;
-            bookingProcessor.SetSizeOfHotel(size);
+
+            hotelProcessor.SetSizeOfHotel(size);
             List<string> actual = new List<string>();
 
             // Act
@@ -116,7 +129,7 @@ namespace HotelReservationTests
         }
 
         [TestMethod]
-        public void TestMethod5()
+        public void CheckIn_AcceptedAfterDecline()
         {
             // Arrange
             int size = 3;
@@ -137,8 +150,8 @@ namespace HotelReservationTests
                 "Decline",
                 "Accept"
             };
-            BookingProcessor bookingProcessor = BookingProcessor.GetInstance;
-            bookingProcessor.SetSizeOfHotel(size);
+           
+            hotelProcessor.SetSizeOfHotel(size);
             List<string> actual = new List<string>();
 
             // Act
@@ -152,7 +165,7 @@ namespace HotelReservationTests
         }
 
         [TestMethod]
-        public void TestMethod6()
+        public void CheckIn_ComplexRequests()
         {
             // Arrange
             int size = 2;
@@ -181,8 +194,8 @@ namespace HotelReservationTests
                 "Accept",
                 "Accept"
             };
-            BookingProcessor bookingProcessor = BookingProcessor.GetInstance;
-            bookingProcessor.SetSizeOfHotel(size);
+            
+            hotelProcessor.SetSizeOfHotel(size);
             List<string> actual = new List<string>();
 
             // Act
