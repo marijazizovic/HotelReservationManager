@@ -30,7 +30,7 @@ namespace HotelReservationTests
             int checkIn = -4;
             int checkOut = 2;
             string expected = "Decline";           
-            hotelProcessor.SetSizeOfHotel(size);
+            hotelProcessor.SetHotelSize(size);
 
             // Act
             var actual = bookingProcessor.CheckIn(checkIn, checkOut).ToString();
@@ -47,7 +47,7 @@ namespace HotelReservationTests
             int checkIn = 200;
             int checkOut = 400;
             string expected = "Decline";
-            hotelProcessor.SetSizeOfHotel(size);
+            hotelProcessor.SetHotelSize(size);
 
             // Act
             var actual = bookingProcessor.CheckIn(checkIn, checkOut).ToString();
@@ -81,7 +81,7 @@ namespace HotelReservationTests
                 "Accept"
             };
 
-            hotelProcessor.SetSizeOfHotel(size);
+            hotelProcessor.SetHotelSize(size);
             List<string> actual = new List<string>();
 
             // Act
@@ -115,7 +115,7 @@ namespace HotelReservationTests
                 "Decline"
             };
 
-            hotelProcessor.SetSizeOfHotel(size);
+            hotelProcessor.SetHotelSize(size);
             List<string> actual = new List<string>();
 
             // Act
@@ -151,7 +151,7 @@ namespace HotelReservationTests
                 "Accept"
             };
            
-            hotelProcessor.SetSizeOfHotel(size);
+            hotelProcessor.SetHotelSize(size);
             List<string> actual = new List<string>();
 
             // Act
@@ -195,7 +195,7 @@ namespace HotelReservationTests
                 "Accept"
             };
             
-            hotelProcessor.SetSizeOfHotel(size);
+            hotelProcessor.SetHotelSize(size);
             List<string> actual = new List<string>();
 
             // Act

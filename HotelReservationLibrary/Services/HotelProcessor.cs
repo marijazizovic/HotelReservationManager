@@ -5,16 +5,30 @@ namespace HotelReservationLibrary.Services
 {
     public class HotelProcessor : IHotelProcessor
     {
+        #region - Consts -
+
         public const int MAX_SIZE_OF_HOTEL = 1000;
 
+        #endregion
+
+        #region - Fields -
+
         private readonly IHotelRepository hotelRepository;
+
+        #endregion
+
+        #region - Constructors -
 
         public HotelProcessor(IHotelRepository hotelRepository)
         {
             this.hotelRepository = hotelRepository;
         }
 
-        public void SetSizeOfHotel(int size)
+        #endregion
+
+        #region - Public Methods -
+
+        public void SetHotelSize(int size)
         {
             hotelRepository.AddHotelRooms(size);
         }
@@ -23,5 +37,7 @@ namespace HotelReservationLibrary.Services
         {
             return size <= MAX_SIZE_OF_HOTEL && size > 0;
         }
+
+        #endregion
     }
 }

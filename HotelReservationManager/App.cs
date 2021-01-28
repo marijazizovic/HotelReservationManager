@@ -7,9 +7,15 @@ namespace HotelReservationManager
 {
     public class App
     {
+        #region - Fields -
+
         private readonly IConfiguration config;
         private readonly IBookingProcessor bookingProcessor;
         private readonly IHotelProcessor hotelProcessor;
+
+        #endregion
+
+        #region - Constructors -
 
         public App(IConfiguration config, IBookingProcessor bookingProcessor, IHotelProcessor hotelProcessor)
         {
@@ -17,6 +23,10 @@ namespace HotelReservationManager
             this.hotelProcessor = hotelProcessor;
             this.config = config;
         }
+
+        #endregion
+
+        #region - Public Methods -
 
         public void Run()
         {
@@ -32,10 +42,14 @@ namespace HotelReservationManager
                 size = Console.ReadLine();
             }
 
-            hotelProcessor.SetSizeOfHotel(sizeOfHotel);
+            hotelProcessor.SetHotelSize(sizeOfHotel);
 
             MakeReservations();
         }
+
+        #endregion
+
+        #region - Private Methods -
 
         private void MakeReservations()
         {
@@ -79,5 +93,7 @@ namespace HotelReservationManager
             BookingResult result = bookingProcessor.CheckIn(checkIn, checkOut);
             Console.WriteLine(result.ToString());
         }
+
+        #endregion
     }
 }

@@ -9,16 +9,30 @@ namespace HotelReservationLibrary.Services
 {
     public class BookingProcessor : IBookingProcessor
     {
+        #region - Consts -
+
         public const int RESERVATION_PERIOD = 364;
+
+        #endregion
+
+        #region - Fields -
 
         private readonly IHotelRepository hotelRepository;
         private readonly IReservationRepository reservationRepository;
+
+        #endregion
+
+        #region - Constructors -
 
         public BookingProcessor(IReservationRepository reservationRepository, IHotelRepository hotelRepository)
         {
             this.reservationRepository = reservationRepository;
             this.hotelRepository = hotelRepository;
         }
+
+        #endregion
+
+        #region - Public Methods -
 
         public BookingResult CheckIn(int checkInDay, int checkOutDay)
         {
@@ -27,8 +41,8 @@ namespace HotelReservationLibrary.Services
 
             try
             {
-                var reservations = reservationRepository.GetReservations();
-                var reserevedRooms = reservations
+                var allReservations = reservationRepository.GetReservations();
+                var reserevedRooms = allReservations
                     .Where(r => (checkInDay >= r.CheckInDay && checkOutDay <= r.CheckOutDay)
                              || (checkInDay <= r.CheckInDay && checkOutDay >= r.CheckOutDay)
                              || (checkInDay <= r.CheckOutDay && checkOutDay >= r.CheckOutDay)
@@ -53,15 +67,26 @@ namespace HotelReservationLibrary.Services
             }           
         }
 
+        #endregion
+
+        #region - Private Methods -
+
+        /// <summary>
+        /// TODO: Add optimization for room reservation
+        /// </summary>
         private int GetOptimalRoom(IEnumerable<int> availableRooms)
         {
-            //TODO: Add optimization for room reservation
             return availableRooms.FirstOrDefault();
         }
 
+        /// <summary>
+        /// Validates checkInDay and checkOutDay of reservation
+        /// </summary>
         private bool ValidateDays(int checkInDay, int checkOutDay)
         {
             return checkInDay >= 0 && checkOutDay <= RESERVATION_PERIOD && checkInDay <= checkOutDay;
         }
+
+        #endregion
     }
 }
